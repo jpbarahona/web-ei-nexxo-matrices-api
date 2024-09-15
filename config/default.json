@@ -1,6 +1,6 @@
 {
-  "host": "localhost",
-  "port": 3030,
+  "host": "HOST",
+  "port": "PORT",
   "public": "../public/",
   "paginate": {
     "default": 500,
@@ -18,7 +18,7 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "HOST",
       "issuer": "feathers",
       "algorithm": "HS256",
       "expiresIn": "1d"

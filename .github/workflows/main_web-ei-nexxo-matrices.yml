@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - web-ei-nexxo-matrices
+name: Build and deploy container app to Azure Web App - api-web-nexxo-matrices-eeff
 
 on:
   push:
@@ -9,43 +9,32 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_NAME: api-web-nexxo-matrices-eeff   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '20.x'                # set this to the node version to use
+  PORT: 8080
+  HOST: api-web-nexxo-matrices-eeff-dyc9g7f3b7cwg8bp.eastus-01.azurewebsites.net
+
 jobs:
-  build:
-    runs-on: 'ubuntu-latest'
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Log in to registry
-      uses: docker/login-action@v2
-      with:
-        registry: https://mcr.microsoft.com/
-        username: ${{ secrets.AzureAppService_ContainerUsername_97e2c1dc6c3a4a1ca3195720096798d8 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_4d029bc8cddc423aa5b56c0438fd5c76 }}
-
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v3
-      with:
-        push: true
-        tags: mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_97e2c1dc6c3a4a1ca3195720096798d8 }}/appsvc/staticsite:${{ github.sha }}
-        file: ./Dockerfile
-
-  deploy:
+  build-and-deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
     steps:
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'web-ei-nexxo-matrices'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_481818e042ee4b89a8ec19c47390fc90 }}
-        images: 'mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_97e2c1dc6c3a4a1ca3195720096798d8 }}/appsvc/staticsite:${{ github.sha }}'
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: npm install
+      
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v3
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_481818e042ee4b89a8ec19c47390fc90 }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
