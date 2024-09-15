@@ -1,0 +1,68 @@
+{
+  "name": "web-api",
+  "description": "Api para adminsitración y ejecución de flujo de matrices",
+  "version": "0.0.0",
+  "homepage": "",
+  "private": true,
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "Juan-Pablo Barahona",
+    "email": "juanpablo.barahonaa@gmail.com"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "engines": {
+    "node": "^21.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run mocha",
+    "lint": "eslint src/. test/. --config .eslintrc.json --fix",
+    "dev": "nodemon src/",
+    "start": "node src/",
+    "mocha": "mocha test/ --recursive --exit"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ],
+    "ignore": []
+  },
+  "dependencies": {
+    "@azure/msal-node": "^2.13.0",
+    "@feathersjs/authentication": "^4.5.18",
+    "@feathersjs/authentication-local": "^4.5.18",
+    "@feathersjs/authentication-oauth": "^4.5.18",
+    "@feathersjs/configuration": "^4.5.17",
+    "@feathersjs/errors": "^4.5.17",
+    "@feathersjs/express": "^4.5.18",
+    "@feathersjs/feathers": "^4.5.17",
+    "@feathersjs/transport-commons": "^5.0.26",
+    "compression": "^1.7.4",
+    "cookie-session": "^2.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "feathers-sequelize": "^6.4.0",
+    "helmet": "^4.6.0",
+    "mssql": "^10.0.2",
+    "passport": "^0.7.0",
+    "passport-azure-ad": "^4.3.5",
+    "sequelize": "^6.37.3",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "axios": "^1.7.2",
+    "eslint": "^7.32.0",
+    "mocha": "^8.4.0",
+    "nodemon": "^2.0.22"
+  }
+}
