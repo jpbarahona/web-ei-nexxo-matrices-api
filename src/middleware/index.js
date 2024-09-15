@@ -3,7 +3,9 @@ const msal = require('@azure/msal-node');
 const {
   CLIENT_SECRET,
   CLIENT_ID,
-  TENANT_ID
+  TENANT_ID,
+  HOST,
+  WEBHOST
 } = process.env;
 
 // Configuración de MSAL
@@ -34,7 +36,7 @@ module.exports = function (app) {
     app.get('/login', (req, res) => {
       const authUrlParams = {
         scopes: ['user.read'],
-        redirectUri: 'http://localhost:3030/redirect',
+        redirectUri: HOST + '/redirect',
       };
 
       pca.getAuthCodeUrl(authUrlParams).then((response) => {
@@ -48,7 +50,7 @@ module.exports = function (app) {
         code: req.query.code,
         token: req.query.accessToken,
         scopes: ['user.read'],
-        redirectUri: 'http://localhost:3030/redirect',
+        redirectUri: HOST + '/redirect',
       };
 
       pca.acquireTokenByCode(tokenRequest).then(async (response) => {
@@ -76,7 +78,7 @@ module.exports = function (app) {
             });
 
             let authRes = await app.service('authentication').create(authRequest,{});
-            res.redirect(301, `http://localhost:3033/app?code=${authRes.accessToken}`);
+            res.redirect(301, `${WEBHOST}/app?code=${authRes.accessToken}`);
             
             return;
           } else {
@@ -88,7 +90,7 @@ module.exports = function (app) {
           }).then(async (user) => {
             // console.log("Usuario creado: ", user);
             let authRes = await app.service('authentication').create(authRequest,{});
-            res.redirect(301, `http://localhost:3033/app?code=${authRes.accessToken}`);
+            res.redirect(301, `${WEBHOST}/app?code=${authRes.accessToken}`);
 
           }).catch((error) => console.log());
           }

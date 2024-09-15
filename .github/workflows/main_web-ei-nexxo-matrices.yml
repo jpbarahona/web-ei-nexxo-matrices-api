@@ -14,7 +14,8 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '20.x'                # set this to the node version to use
   PORT: 8080
-  HOST: api-web-nexxo-matrices-eeff-dyc9g7f3b7cwg8bp.eastus-01.azurewebsites.net
+  HOST: https://api-web-nexxo-matrices-eeff-dyc9g7f3b7cwg8bp.eastus-01.azurewebsites.net # HOST API
+  WEBHOST: https://orange-bush-02cfca80f.5.azurestaticapps.net # HOST WEB
 
 jobs:
   build-and-deploy:
