@@ -33,6 +33,8 @@ module.exports = function (app) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
     users.belongsToMany(models.centro_costos, {through: 'usuario_centro_costos'});
+
+    users.hasMany(models.execute_flow);
   };
 
   return users;

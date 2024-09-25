@@ -22,6 +22,10 @@ module.exports = function (app) {
       type: DataTypes.STRING,
       allowNull: true
     },
+    estado: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   }, {
     hooks: {
       beforeCount(options) {
@@ -34,6 +38,9 @@ module.exports = function (app) {
   executeFlow.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    executeFlow.belongsTo(models.users);
+
+    executeFlow.hasMany(models.logs_procesos);
   };
 
   return executeFlow;

@@ -6,10 +6,22 @@ const DataTypes = Sequelize.DataTypes;
 module.exports = function (app) {
   const sequelizeClient = app.get('sequelizeClient');
   const logsProcesos = sequelizeClient.define('logs_procesos', {
-    mensaje: {
+    proceso: {
       type: DataTypes.TEXT,
       allowNull: false
-    }
+    },
+    estado: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    mensaje: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    rutaArchivo: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
   }, {
     hooks: {
       beforeCount(options) {
@@ -22,6 +34,7 @@ module.exports = function (app) {
   logsProcesos.associate = function (models) {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
+    logsProcesos.belongsTo(models.execute_flow);
   };
 
   return logsProcesos;

@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { include } = require('./execute-flow.modules');
+const { include, postCreateExecuteFlow } = require('./execute-flow.modules');
 
 module.exports = {
   before: {
@@ -18,7 +18,9 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      postCreateExecuteFlow()
+    ],
     update: [],
     patch: [],
     remove: []
