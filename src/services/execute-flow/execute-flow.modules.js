@@ -35,23 +35,27 @@ module.exports = {
 
 			data.executeFlowId = id;
 			
-			data.procesos.forEach(proceso => {
-				app.service('logs-procesos').create({
+			const promises = data.procesos.map(async (proceso) => {
+				// Crear un log para el proceso
+				await app.service('logs-procesos').create({
 					estado: "Pendiente",
 					executeFlowId: id,
 					mensaje: "Proceso iniciado",
-					proceso: proceso == 'oc' ? 'Orden de compra' : proceso.charAt(0).toUpperCase() + proceso.slice(1), // capitalize first letter
+					proceso: proceso === 'oc' ? 'Orden de compra' : proceso.charAt(0).toUpperCase() + proceso.slice(1), // Capitaliza la primera letra
 					rutaArchivo: ''
 				});
-
-				// ejecutar functions
-				axios.post(`${FUNCTIONAPI}/api/${proceso}`, {
+			
+				// Ejecutar la función asincrónicamente con axios.post
+				return axios.post(`${FUNCTIONAPI}/api/${proceso}`, {
 					executeFlowId: id,
 					periodo: data.periodo,
 					ceco: data.ceco,
 					nuevaRevision: data.nuevaRevision
-				})
+				});
 			});
+			
+			// Esperar a que todas las promesas terminen
+			Promise.all(promises);
 
 			if(data.procesos.includes('buk')){
 				axios.post(`${FUNCTIONAPI}/api/prebuk`, {
