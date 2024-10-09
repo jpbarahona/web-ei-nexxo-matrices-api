@@ -52,18 +52,43 @@ module.exports = {
 					proceso: proceso === 'oc' ? 'Orden de compra' : proceso.charAt(0).toUpperCase() + proceso.slice(1), // Capitaliza la primera letra
 					rutaArchivo: ''
 				  });
-				  
-				  let nuevaRevision = proceso === 'oc' ? data.nuevaRevision : false;
-
-				  // Ejecutar la función asincrónicamente con axios.post
-				  await axios.post(`${FUNCTIONAPI}/api/${proceso}`, {
-					executeFlowId: id,
-					periodo: data.periodo,
-					ceco: data.ceco,
-					nuevaRevision
-				  });
 				}
-			  }
+
+				// Ejecutar la función asincrónicamente con axios.post
+				axios.post(`${FUNCTIONAPI}/api/${data.procesos[0]}`, {
+				  executeFlowId: id,
+				  periodo: data.periodo,
+				  ceco: data.ceco,
+				  nuevaRevision: data.nuevaRevision
+				})
+				.then( r => {
+					// Ejecutar la función asincrónicamente con axios.post
+					axios.post(`${FUNCTIONAPI}/api/${data.procesos[1]}`, {
+						executeFlowId: id,
+						periodo: data.periodo,
+						ceco: data.ceco,
+						nuevaRevision: false
+				  	})
+					.then( r => {
+						// Ejecutar la función asincrónicamente con axios.post
+						axios.post(`${FUNCTIONAPI}/api/${data.procesos[2]}`, {
+							executeFlowId: id,
+							periodo: data.periodo,
+							ceco: data.ceco,
+							nuevaRevision: false
+						})
+						.then( r => {
+							// Ejecutar la función asincrónicamente con axios.post
+							axios.post(`${FUNCTIONAPI}/api/${data.procesos[3]}`, {
+								executeFlowId: id,
+								periodo: data.periodo,
+								ceco: data.ceco,
+								nuevaRevision: false
+							});
+						})
+					})
+				})
+			}
 			
 			ejecutarProcesosSecuencialmente(data, id, app);
 
