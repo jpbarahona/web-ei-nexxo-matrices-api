@@ -52,13 +52,15 @@ module.exports = {
 					proceso: proceso === 'oc' ? 'Orden de compra' : proceso.charAt(0).toUpperCase() + proceso.slice(1), // Capitaliza la primera letra
 					rutaArchivo: ''
 				  });
-			  
+				  
+				  let nuevaRevision = proceso === 'oc' ? data.nuevaRevision : false;
+
 				  // Ejecutar la función asincrónicamente con axios.post
 				  await axios.post(`${FUNCTIONAPI}/api/${proceso}`, {
 					executeFlowId: id,
 					periodo: data.periodo,
 					ceco: data.ceco,
-					nuevaRevision: data.nuevaRevision
+					nuevaRevision
 				  });
 				}
 			  }
